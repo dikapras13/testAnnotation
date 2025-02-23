@@ -15,21 +15,19 @@ const browsers = [{
         options: new firefox.Options().addArguments("--headless")
     },
     {
-         name: "MicrosoftEdge",
-         options: new edge.Options().addArguments("--headless")
-     }
-
+        name: "MicrosoftEdge",
+        options: new edge.Options().addArguments("--headless")
+    }
 ];
-
 
 describe("saucedemo test - login and add to cart", function () {
     this.timeout(20000);
 
     for (let browser of browsers) {
         let driver;
+
         beforeEach(async function () {
             //membuat koneksi dengan browser
-
             driver = await new Builder()
                 .forBrowser(browser.name)
                 .setChromeOptions(browser.name === "chrome" ? browser.options : undefined)
