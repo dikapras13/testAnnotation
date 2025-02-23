@@ -1,5 +1,25 @@
 {
+  "name": "testannotation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "addtocart": "mocha saucedemo/saucedemo-annotation.js"
+  },
   "dependencies": {
     "selenium-webdriver": "^4.29.0"
-  }
+  },
+  "devDependencies": {
+    "mocha": "^11.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dikapras13/testAnnotation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dikapras13/testAnnotation/issues"
+  },
+  "homepage": "https://github.com/dikapras13/testAnnotation#readme",
+  "description": ""
 }
