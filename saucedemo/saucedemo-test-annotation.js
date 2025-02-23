@@ -6,28 +6,30 @@ const assert = require('assert');
 const chrome = require("selenium-webdriver/chrome");
 const firefox = require("selenium-webdriver/firefox");
 const edge = require("selenium-webdriver/edge");
+
+//Array yang berisi konfigurasi browser
 const browsers = [{
         name: "chrome",
-        options: new chrome.Options().addArguments("--headless")
+        options: new chrome.Options().addArguments("--headless") // Menambahkan opsi untuk menjalankan Chrome dalam mode headless
     },
     {
         name: "firefox",
-        options: new firefox.Options().addArguments("--headless")
+        options: new firefox.Options().addArguments("--headless") // Menambahkan opsi untuk menjalankan Firefox dalam mode headless
     },
     {
         name: "MicrosoftEdge",
-        options: new edge.Options().addArguments("--headless")
+        options: new edge.Options().addArguments("--headless") // Menambahkan opsi untuk menjalankan Microsoft Edge dalam mode headless
     }
 ];
 
 describe("saucedemo test - login and add to cart", function () {
-    this.timeout(20000);
+    this.timeout(20000); // Menetapkan batas waktu eksekusi test dalam 20 detik
 
-    for (let browser of browsers) {
+    for (let browser of browsers) { // Looping untuk menjalankan test pada setiap browser yang dikonfigurasi
         let driver;
 
         beforeEach(async function () {
-            //membuat koneksi dengan browser
+            // Membuat koneksi dengan browser yang akan digunakan
             driver = await new Builder()
                 .forBrowser(browser.name)
                 .setChromeOptions(browser.name === "chrome" ? browser.options : undefined)
@@ -35,26 +37,26 @@ describe("saucedemo test - login and add to cart", function () {
                 .setEdgeOptions(browser.name === "MicrosoftEdge" ? browser.options : undefined)
                 .build();
 
-            //mengakses website Saucedemo
+            // Mengakses website Saucedemo
             await driver.get("https://www.saucedemo.com/");
         });
 
         it("login success and add item to cart success", async function () {
-            //menginputkan username dan password
+            // Menginputkan username dan password yang valid
             await driver.findElement(By.id('user-name')).sendKeys('standard_user');
             await driver.findElement(By.id('password')).sendKeys('secret_sauce');
 
-            //klik tombol login
+            // Klik tombol login
             await driver.findElement(By.id('login-button')).click();
 
-            // validasi apakah sudah berhasil menampilkan halaman dashboard
+            // Validasi apakah berhasil masuk ke halaman dashboard
             let titleText = await driver.findElement(By.css('.app_logo')).getText();
             assert.strictEqual(titleText.includes('Swag Lab'), true, "Title Does not include Swag Labs");
 
-            // menambahkan produk ke keranjang
+            // Menambahkan produk ke keranjang belanja
             await driver.findElement(By.id('add-to-cart-sauce-labs-backpack')).click();
 
-            // melakukan validasi apakah produk berhasil ditambahkan ke keranjang
+            // Validasi apakah produk berhasil ditambahkan ke keranjang
             let cart = await driver.findElement(By.css('.shopping_cart_badge'));
             assert.strictEqual(await cart.isDisplayed(), true, "You haven't selected a product yet");
 
@@ -62,14 +64,14 @@ describe("saucedemo test - login and add to cart", function () {
         });
 
         it("login failed", async function () {
-            //menginputkan username dan password
+            // Menginputkan username dan password yang salah
             await driver.findElement(By.id('user-name')).sendKeys('standard_user');
             await driver.findElement(By.id('password')).sendKeys('wrong-password');
 
-            //klik tombol login
+            // Klik tombol login
             await driver.findElement(By.id('login-button')).click();
 
-            // validasi apakah sudah berhasil menampilkan halaman dashboard
+            // Validasi apakah pesan error muncul
             let errorText = await driver.findElement(By.css('.error-message-container')).getText();
             assert.strictEqual(errorText.includes('Username and password do not match any user in this service'), true, "Error massage not displayed properly");
 
@@ -77,9 +79,7 @@ describe("saucedemo test - login and add to cart", function () {
         });
 
         afterEach(async function () {
-            await driver.quit();
+            await driver.quit(); // Menutup browser setelah setiap test selesai
         });
     }
 })
-
-// saucedemoLogin();
