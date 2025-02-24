@@ -31,7 +31,7 @@ describe("saucedemo test - login and add to cart", function () {
         let driver;
 
         beforeEach(async function () {
-            // Membuat koneksi dengan browser yang akan digunakan
+            // Membuat koneksi dengan webdriver yang akan digunakan
             driver = await new Builder()
                 .forBrowser(browser.name)
                 .setChromeOptions(browser.name === "chrome" ? browser.options : undefined)
